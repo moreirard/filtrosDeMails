@@ -1,6 +1,6 @@
 package ar.edu.unahur.obj2.composite;
 
-public class FiltroPorAsunto {
+public class FiltroPorAsunto implements Filtro{
 
     private String palabraClave;
 
@@ -8,6 +8,7 @@ public class FiltroPorAsunto {
         this.palabraClave = palabraClave;
     }
 
+    @Override
     public Boolean cumple(Correo correo) {
         return correo.getAsunto().contains(palabraClave);
     }
