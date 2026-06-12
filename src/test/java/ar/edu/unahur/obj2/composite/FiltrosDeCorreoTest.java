@@ -36,4 +36,35 @@ public class FiltrosDeCorreoTest {
         // Act & Assert
         assertTrue(filtro.cumple(correo));
     }
+
+    @Test
+    public void testFiltroAndCumpleSoloCuandoTodosSusFiltrosCumplen() {
+        // Arrange
+        Correo correo = new Correo("Envío de factura importante", true); 
+        
+        Filtro filtroAdjunto = new FiltroTieneAdjunto();
+        Filtro filtroAsunto = new FiltroPorAsunto("factura");
+        
+        // Pasamos los filtros simples a nuestro nuevo filtro compuesto
+        FiltroAnd filtroAnd = new FiltroAnd(filtroAdjunto, filtroAsunto);
+
+        // Act & Assert
+        assertTrue(filtroAnd.cumple(correo));
+    }
+
+    @Test
+    public void testFiltroAndNoCumpleSiFallaAlMenosUnFiltro() {
+        // Arrange
+        Correo correoSinAdjunto = new Correo("Envío de factura importante", false); 
+        Correo correoSinAsunto = new Correo("Saludos cordiales", true);
+        
+        Filtro filtroAdjunto = new FiltroTieneAdjunto();
+        Filtro filtroAsunto = new FiltroPorAsunto("factura");
+        
+        FiltroAnd filtroAnd = new FiltroAnd(filtroAdjunto, filtroAsunto);
+
+        // Act & Assert
+        assertFalse(filtroAnd.cumple(correoSinAdjunto), "Debe fallar porque no tiene adjunto");
+        assertFalse(filtroAnd.cumple(correoSinAsunto), "Debe fallar porque el asunto no coincide");
+    }
 }
