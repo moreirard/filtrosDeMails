@@ -125,4 +125,56 @@ public class FiltrosDeCorreoTest {
         assertFalse(filtroNoTieneAdjunto.cumple(correo), 
             "El filtro NOT debe devolver false si el filtro interno devuelve true");
     }
+
+    @Test
+    public void testFiltroOrCumpleSiAlMenosUnFiltroCumple() {
+        // Arrange
+        // Correo: "Oferta", sin adjuntos, 50 KB
+        Correo correo = new Correo("Oferta de capacitación", false, 50);
+        
+        Filtro filtroAdjunto = new FiltroTieneAdjunto(); // Va a dar false
+        Filtro filtroAsunto = new FiltroPorAsunto("Oferta"); // Va a dar true
+        
+        FiltroOr filtroOr = new FiltroOr(filtroAdjunto, filtroAsunto);
+
+        // Act & Assert
+        assertTrue(filtroOr.cumple(correo), 
+            "Debe pasar porque el asunto coincide, aunque no tenga adjuntos");
+    }
+
+    /*
+    @Test
+    public void testFiltroOrCumpleSiAlMenosUnFiltroCumple() {
+        // Arrange
+        Correo correo = new Correo("Oferta de capacitación", false, 50);
+        
+        Filtro filtroAdjunto = new FiltroTieneAdjunto(); // Va a dar false
+        Filtro filtroAsunto = new FiltroPorAsunto("Oferta"); // Va a dar true
+        
+        // Agrupamos los filtros en una Lista
+        List<Filtro> listaDeFiltros = List.of(filtroAdjunto, filtroAsunto); 
+        
+        // Pasamos la lista al constructor
+        FiltroOr filtroOr = new FiltroOr(listaDeFiltros);
+
+        // Act & Assert
+        assertTrue(filtroOr.cumple(correo), 
+            "Debe pasar porque el asunto coincide, aunque no tenga adjuntos");
+    }
+    */
+
+    @Test
+    public void testFiltroOrNoCumpleSiNingunFiltroCumple() {
+        // Arrange
+        Correo correo = new Correo("Saludos", false, 50);
+        
+        Filtro filtroAdjunto = new FiltroTieneAdjunto(); // Va a dar false
+        Filtro filtroAsunto = new FiltroPorAsunto("Oferta"); // Va a dar false
+        
+        FiltroOr filtroOr = new FiltroOr(filtroAdjunto, filtroAsunto);
+
+        // Act & Assert
+        assertFalse(filtroOr.cumple(correo), 
+            "Debe fallar porque ninguna de las condiciones se cumple");
+    }
 }
