@@ -3,6 +3,7 @@ package ar.edu.unahur.obj2.composite;
 public class Correo {
     private Boolean tieneAdjuntos;
     private String asunto;
+    private Integer tamanioKB;
 
     // Usamos un constructor simple por ahora
     public Correo(Boolean tieneAdjuntos) {
@@ -14,11 +15,21 @@ public class Correo {
         this.tieneAdjuntos = tieneAdjuntos;
     }
 
+    public Correo(String asunto, Boolean tieneAdjuntos, Integer tamanioKB) {
+        this.asunto = asunto;
+        this.tieneAdjuntos = tieneAdjuntos;
+        this.tamanioKB = tamanioKB;
+    }
+
     public Boolean tieneAdjuntos() {
         return this.tieneAdjuntos;
     }
 
     public String getAsunto() {
        return this.asunto;
+    }
+
+    public Integer getTamanioKB() {
+        return tamanioKB;       
     }
 }

@@ -67,4 +67,25 @@ public class FiltrosDeCorreoTest {
         assertFalse(filtroAnd.cumple(correoSinAdjunto), "Debe fallar porque no tiene adjunto");
         assertFalse(filtroAnd.cumple(correoSinAsunto), "Debe fallar porque el asunto no coincide");
     }
+
+    @Test
+    public void testUnCorreoConTamanioMayorOIgualAlRequeridoPasaElFiltro() {
+        // Arrange
+        // Parámetros: Asunto, Tiene Adjuntos, Tamaño en KB
+        Correo correo = new Correo("Reporte mensual", false, 250); 
+        FiltroPorTamanio filtro = new FiltroPorTamanio(200); // Mínimo requerido: 200 KB
+
+        // Act & Assert
+        assertTrue(filtro.cumple(correo));
+    }
+    
+    @Test
+    public void testUnCorreoConTamanioMenorAlRequeridoNoPasaElFiltro() {
+        // Arrange
+        Correo correo = new Correo("Texto simple", false, 50); 
+        FiltroPorTamanio filtro = new FiltroPorTamanio(200);
+
+        // Act & Assert
+        assertFalse(filtro.cumple(correo));
+    }
 }
